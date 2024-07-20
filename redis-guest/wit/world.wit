@@ -1,0 +1,7 @@
+package wasmredis:guest;
+
+/// An example world for the component to target.
+world example {
+    import wasmredis:host/store;
+    export wasmredis:host/run;
+}

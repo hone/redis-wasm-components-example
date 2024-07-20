@@ -1,0 +1,12 @@
+[workspace]
+members = [
+    "redis-guest",
+    "redis-host"
+]
+resolver = "2"
+
+[profile.release.package.redis-guest]
+codegen-units = 1
+opt-level = "s"
+debug = false
+strip = true

@@ -1,0 +1,9 @@
+[package]
+name = "redis-host"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+redis = "0.25.4"
+wasmtime = "22.0.0"
+wasmtime-wasi = "22.0.0"
