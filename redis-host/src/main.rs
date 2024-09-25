@@ -66,12 +66,13 @@ fn main() {
     );
     let bytes = include_bytes!("../../target/wasm32-wasip1/release/redis_guest.wasm");
     let component = Component::new(&engine, bytes).unwrap();
+    let (_, run_interface_export) = component.export_index(None, "wasmredis:host/run").unwrap();
+    let (_, run_func_export) = component
+        .export_index(Some(&run_interface_export), "run")
+        .unwrap();
     let instance = linker.instantiate(&mut store, &component).unwrap();
     let func = instance
-        .exports(&mut store)
-        .instance("wasmredis:host/run")
-        .unwrap()
-        .typed_func::<(), ()>("run")
+        .get_typed_func::<(), ()>(&mut store, &run_func_export)
         .expect("run export not found");
     func.call(&mut store, ()).unwrap();
 
