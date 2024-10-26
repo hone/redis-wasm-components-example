@@ -75,6 +75,7 @@ fn main() {
         .get_typed_func::<(), ()>(&mut store, &run_func_export)
         .expect("run export not found");
     func.call(&mut store, ()).unwrap();
+    func.post_return(&mut store).unwrap();
 
     let mut connection = redis.get_connection().unwrap();
     let value: Vec<u8> = connection.get("foo").unwrap();
