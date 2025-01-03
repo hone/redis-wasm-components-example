@@ -664,7 +664,7 @@ mod _rt {
 /// ```
 #[allow(unused_macros)]
 #[doc(hidden)]
-macro_rules! __export_example_impl {
+macro_rules! __export_redis_store_impl {
     ($ty:ident) => {
         self::export!($ty with_types_in self);
     };
@@ -675,12 +675,12 @@ macro_rules! __export_example_impl {
     };
 }
 #[doc(inline)]
-pub(crate) use __export_example_impl as export;
+pub(crate) use __export_redis_store_impl as export;
 #[cfg(target_arch = "wasm32")]
-#[link_section = "component-type:wit-bindgen:0.35.0:wasmredis:guest:example:encoded world"]
+#[link_section = "component-type:wit-bindgen:0.35.0:wasmredis:host:redis-store:encoded world"]
 #[doc(hidden)]
-pub static __WIT_BINDGEN_COMPONENT_TYPE: [u8; 514] = *b"\
-\0asm\x0d\0\x01\0\0\x19\x16wit-component-encoding\x04\0\x07\x84\x03\x01A\x02\x01\
+pub static __WIT_BINDGEN_COMPONENT_TYPE: [u8; 521] = *b"\
+\0asm\x0d\0\x01\0\0\x19\x16wit-component-encoding\x04\0\x07\x87\x03\x01A\x02\x01\
 A\x04\x01B\x15\x04\0\x07kvstore\x03\x01\x01q\x03\x0dno-such-store\0\0\x0daccess-\
 denied\0\0\x05other\x01s\0\x04\0\x05error\x03\0\x01\x01h\0\x01p}\x01k\x04\x01j\x01\
 \x05\x01\x02\x01@\x02\x04self\x03\x03keys\0\x06\x04\0\x13[method]kvstore.get\x01\
@@ -689,9 +689,9 @@ thod]kvstore.set\x01\x09\x01j\x01\x04\x01\x02\x01@\x02\x04self\x03\x03keys\0\x0a
 \x04\0\x16[method]kvstore.delete\x01\x0b\x01@\x01\x03keys\0\x06\x04\0\x03get\x01\
 \x0c\x01@\x02\x03keys\x05value\x04\0\x08\x04\0\x03set\x01\x0d\x01@\x01\x03keys\0\
 \x0a\x04\0\x06delete\x01\x0e\x03\0\x14wasmredis:host/store\x05\0\x01B\x02\x01@\0\
-\x01\0\x04\0\x03run\x01\0\x04\0\x12wasmredis:host/run\x05\x01\x04\0\x17wasmredis\
-:guest/example\x04\0\x0b\x0d\x01\0\x07example\x03\0\0\0G\x09producers\x01\x0cpro\
-cessed-by\x02\x0dwit-component\x070.220.0\x10wit-bindgen-rust\x060.35.0";
+\x01\0\x04\0\x03run\x01\0\x04\0\x12wasmredis:host/run\x05\x01\x04\0\x1awasmredis\
+:host/redis-store\x04\0\x0b\x11\x01\0\x0bredis-store\x03\0\0\0G\x09producers\x01\
+\x0cprocessed-by\x02\x0dwit-component\x070.220.0\x10wit-bindgen-rust\x060.35.0";
 #[inline(never)]
 #[doc(hidden)]
 pub fn __link_custom_section_describing_imports() {

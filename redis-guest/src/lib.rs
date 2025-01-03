@@ -7,6 +7,7 @@ struct Component;
 
 impl Guest for Component {
     fn run() {
+        let resource = redis::Kvstore::new();
         redis::set("foo", "bar".as_bytes()).unwrap();
     }
 }

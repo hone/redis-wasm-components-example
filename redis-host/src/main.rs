@@ -1,8 +1,8 @@
 use redis::Commands;
 use std::str;
-use wasmredis::host::store::Error as StoreError;
+use wasmredis::host::store::{Error as StoreError, Kvstore};
 use wasmtime::{
-    component::{bindgen, Component, Linker},
+    component::{bindgen, Component, Linker, Resource},
     Engine, Store,
 };
 use wasmtime_wasi::{ResourceTable, WasiCtx, WasiCtxBuilder, WasiView};
@@ -13,6 +13,47 @@ struct MyState {
     ctx: WasiCtx,
     table: ResourceTable,
     pub connection: redis::Connection,
+}
+
+struct RedisResource {
+    connection: redis::Connection,
+}
+
+impl wasmredis::host::store::HostKvstore for MyState {
+    fn new(&mut self) -> Resource<Kvstore> {}
+
+    fn get(
+        &mut self,
+        _resource: Resource<Kvstore>,
+        key: String,
+    ) -> Result<Option<Vec<u8>>, StoreError> {
+        self.connection
+            .get(&key)
+            .map_err(|err| StoreError::Other(err.detail().unwrap().to_string()))
+    }
+
+    fn set(
+        &mut self,
+        _resource: Resource<Kvstore>,
+        key: String,
+        value: Vec<u8>,
+    ) -> Result<(), StoreError> {
+        let result: Result<String, _> = self.connection.set(&key, value);
+
+        result
+            .map(|_| ())
+            .map_err(|err| StoreError::Other(err.detail().unwrap().to_string()))
+    }
+
+    fn delete(&mut self, _resource: Resource<Kvstore>, key: String) -> Result<Vec<u8>, StoreError> {
+        self.connection
+            .del(&key)
+            .map_err(|err| StoreError::Other(err.detail().unwrap().to_string()))
+    }
+
+    fn drop(&mut self, _resource: Resource<Kvstore>) -> Result<(), wasmtime::Error> {
+        Ok(())
+    }
 }
 
 impl wasmredis::host::store::Host for MyState {
